@@ -1,4 +1,4 @@
-Array.prototype.shuffle = function() {
+function shuffle() {
   const a = this.slice();
   for (let i = a.length; i; i--) {
     let j = Math.floor(Math.random() * i);

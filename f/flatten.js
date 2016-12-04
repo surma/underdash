@@ -1,3 +1,3 @@
-Array.prototype.flatten = function() {
+function flatten() {
   return Array.prototype.concat.apply([], this);
 }
