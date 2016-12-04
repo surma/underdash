@@ -4,7 +4,7 @@ module.exports = function(config) {
     frameworks: ['mocha'],
     files: [
       'node_modules/chai/chai.js',
-      'test/*.test.js'
+      'test/*.test.boilerplated.js'
     ],
     exclude: [
     ],
