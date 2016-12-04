@@ -8,6 +8,15 @@ const templateTag =
         strings[0]
       );
 
+const asyncFuncWrapper = templateTag`
+  function f(...args) {
+    if (${'isGenerator'})
+      return Array.from(origF(this, ...args));
+    return origF(this, ...args);
+  };
+  const origF = ${'func'};
+`;
+
 boilerplate = templateTag`
   (function (root) {
     'use strict';
@@ -16,13 +25,11 @@ boilerplate = templateTag`
     const expect = root.chai && root.chai.expect || require('chai').expect;
     const f = ${'func'};
 
-    describe('underdash', function () {
-      describe('${'name'}', function () {
-        ${'test'}
-      });
+    describe('${'name'}', function () {
+      ${'test'}
     });
   })(this);
-  `
+`;
 
 const filterRegex = /([^.]+)\.test\.js/;
 
@@ -35,15 +42,29 @@ fs.readdir('test')
         return Promise.all([
           fs.readFile(`test/${f}`),
           fs.readFile(`f/${name}.js`),
+          fs.readFile(`f/${name}Lazy.js`).catch(_ => {}),
           name
         ])
-        .then(([testCode, fCode, name]) => {
+        .then(([testCode, fCode, fLazyCode, name]) => {
           const code = boilerplate({
             name,
             func: fCode.toString(),
             test: testCode.toString()
           });
-          return fs.writeFile(`test/${name}.test.boilerplated.js`, code)
+          const testFiles = [fs.writeFile(`test/${name}.test.boilerplated.js`, code)];
+          if (!files.includes(`${name}Lazy.test.js`) && fLazyCode) {
+            fLazyCode = fLazyCode.toString();
+            const code = boilerplate({
+              name: `${name}Lazy`,
+              func: asyncFuncWrapper({
+                func: fLazyCode,
+                isGenerator: /function\*/.test(fLazyCode.split('\n')[0])
+              }),
+              test: testCode.toString()
+            });
+            testFiles.push(fs.writeFile(`test/${name}Lazy.test.boilerplated.js`, code));
+          }
+          return Promise.all(testFiles);
         });
       })
   )
