@@ -46,14 +46,18 @@ fs.readdir('test')
           name
         ])
         .then(([testCode, fCode, fLazyCode, name]) => {
-          const code = boilerplate({
-            name,
-            func: fCode.toString(),
-            test: testCode.toString()
-          });
-          const testFiles = [fs.writeFile(`test/${name}.test.boilerplated.js`, code)];
-          if (!files.includes(`${name}Lazy.test.js`) && fLazyCode) {
-            fLazyCode = fLazyCode.toString();
+          let testFiles = [];
+          fCode = fCode.toString();
+          fLazyCode = fLazyCode && fLazyCode.toString();
+          if (!fCode.startsWith('//!')) {
+            const code = boilerplate({
+              name,
+              func: fCode.toString(),
+              test: testCode.toString()
+            });
+            testFiles.push(fs.writeFile(`test/${name}.test.boilerplated.js`, code));
+          }
+          if (!files.includes(`${name}Lazy.test.js`) && fLazyCode && !fLazyCode.startsWith('//!')) {
             const code = boilerplate({
               name: `${name}Lazy`,
               func: asyncFuncWrapper({

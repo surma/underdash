@@ -1,5 +1,9 @@
-function* takeWhile(it, f) {
-  for (let v of it) 
-    if (!f(v)) break;
+function* dropWhile(it, f) {
+  it = it[Symbol.iterator]();
+  for (let v of it)
+    if (!f(v)) {
+      yield v;
+      break;
+    }
   yield* it;
 }

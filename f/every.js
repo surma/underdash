@@ -1,1 +1,1 @@
-// Array.prototype.every
+//! Array.prototype.every

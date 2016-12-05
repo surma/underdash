@@ -1,1 +1,1 @@
-// Array.prototype.reduce
+//! Array.prototype.reduce

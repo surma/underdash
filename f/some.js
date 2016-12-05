@@ -1,1 +1,1 @@
-// Array.prototype.some
+//! Array.prototype.some
