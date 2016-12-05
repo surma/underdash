@@ -139,8 +139,12 @@
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_flazy" class="codeselector flazycode">
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fasync" class="codeselector fasynccode">
         <label class="codeselector fcode" for="{{name}}_radio_fcode">Arrays</label>
+        {{#if fLazyCode}}
         <label class="codeselector flazycode" for="{{name}}_radio_flazy">Sync Iter</label>
+        {{/if}}
+        {{#if fAsyncCode}}
         <label class="codeselector fasynccode" for="{{name}}_radio_fasync">Async Iter</label>
+        {{/if}}
         <pre class="code fcode"><code>{{fCode}}</code></pre>
         <pre class="code flazycode"><code>{{fLazyCode}}</code></pre>
         <pre class="code fasynccode"><code>{{fAsyncCode}}</code></pre>
