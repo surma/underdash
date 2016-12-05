@@ -1,0 +1,160 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=yes" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      border: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      background-color: hsla(0, 0%, 96%, 1);
+    }
+    a, a:link, a:visited, a:hover, a:active {
+      color: inherit;
+    }
+    body {
+      margin: 0 1.5rem;
+    }
+    body.font-loaded {
+      font-family: 'Exo 2';
+      font-weight: 100;
+      /* Ratio of 'Exo 2' (weight: 100) to sans-serif
+       * Determined using https://meowni.ca/font-style-matcher/
+       */
+      font-size: calc(64rem / 71); 
+    }
+    pre, code {
+      font-family: monospace;
+      font-size: 1rem;
+      letter-spacing: -1.2px;
+    }
+    .font-loaded pre, .font-loaded code {
+      /* Ratio of 'Source Code Pro' (weight: 200) to sans-serif
+       * Determined using https://meowni.ca/font-style-matcher/
+       */
+      font-size: calc(64rem / 70);
+      letter-spacing: 0;
+      font-weight: 200;
+    }
+    h1, h2, h3 {
+      text-align: justify;
+      text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
+      margin: 0.5em 0;
+      font-weight: 300;
+    }
+    h1 {
+      font-size: 4rem;
+    }
+    h2 {
+      font-size: 1.4rem;
+    }
+    h3 {
+
+    }
+    .subtitle {
+      margin-top: -2rem;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid black;
+      margin: 0 0 2rem 0;
+      overflow: hidden;
+    }
+    #listing {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .function {
+      flex-basis: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .function:before {
+      display: block;
+      content: attr(data-function-name);
+      text-align: left;
+      font-size: 1.2rem;
+      background-color: hsla(0, 0%, 0%, 0.3);
+      margin: 1rem 0 1rem -1.5rem;
+      
+      padding: 1rem;
+      flex-basis: calc(100% + 1rem);
+      flex-shrink: 0;
+    }
+    .code {
+      border: 1px solid black;
+      background-color: hsla(0, 0%, 100%, 0.54);
+      padding: 0.5rem 1rem;
+      margin: 0;
+      display: none;
+      overflow: auto;
+      flex-basis: 100%;
+      flex-shrink: 0;
+    }
+    input.codeselector {
+      display: none;
+    }
+    label.codeselector {
+      padding: 0.5rem 1rem;
+      background-color: hsla(0, 0%, 100%, 0.54);
+      border: 1px solid black;
+      border-right: 0;
+      border-bottom: 0;
+    }
+    label.codeselector:last-of-type {
+      border-right: 1px solid black;
+    }
+    input.codeselector.fcode:checked ~ label.codeselector.fcode,
+    input.codeselector.flazycode:checked ~ label.codeselector.flazycode,
+    input.codeselector.fasynccode:checked ~ label.codeselector.fasynccode {
+      background-color: hsla(50, 100%, 80%, 0.54);
+    }
+    input.codeselector.fcode:checked ~ .code.fcode,
+    input.codeselector.flazycode:checked ~ .code.flazycode,
+    input.codeselector.fasynccode:checked ~ .code.fasynccode {
+      display: block;
+    }
+  </style>
+  <title>Underdash</title>
+</head>
+<body>
+  <h1 class="title">Underdash</h1>
+  <h2 class="subtitle">Just copy/paste what’cha need</h2>
+  <p>
+    Underdash is a collection of short snippets that implement many of collection manipulation functions known from <a href="https://lodash.com/" rel="noopener" target="_blank">Lo-Dash</a>, <a href="http://underscorejs.org/">UnderscoreJS</a> or functional programming languages. Underdash is an experiment to utilize ESnext features to make the implementation more concise and asynchronous.
+  </p>
+  <hr>
+  <div id="listing">
+    {{#each functions}}
+      <section class="function" data-function-name="{{name}}">
+        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fcode" class="codeselector fcode" checked>
+        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_flazy" class="codeselector flazycode">
+        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fasync" class="codeselector fasynccode">
+        <label class="codeselector fcode" for="{{name}}_radio_fcode">Arrays</label>
+        <label class="codeselector flazycode" for="{{name}}_radio_flazy">Sync Iter</label>
+        <label class="codeselector fasynccode" for="{{name}}_radio_fasync">Async Iter</label>
+        <pre class="code fcode"><code>{{fCode}}</code></pre>
+        <pre class="code flazycode"><code>{{fLazyCode}}</code></pre>
+        <pre class="code fasynccode"><code>{{fAsyncCode}}</code></pre>
+      </section>
+    {{/each}}
+  </div>
+  <script>
+    (function () {
+      const link = document.createElement('link');
+      link.href = "https://fonts.googleapis.com/css?family=Exo+2:100|Source+Code+Pro:200";
+      link.rel = "stylesheet";
+      link.onload = _ => document.body.classList.add('font-loaded');
+      document.head.appendChild(link);
+    })();
+  </script>
+</body>
+
