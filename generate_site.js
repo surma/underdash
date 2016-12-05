@@ -1,5 +1,7 @@
 const handlebars = require('handlebars');
 const fs = require('mz/fs');
+const nsh = require('node-syntaxhighlighter')
+const jsh = nsh.getLanguage('js');
 
 const data = fs.readdir('f')
   .then(files => 
@@ -16,7 +18,12 @@ const data = fs.readdir('f')
             .then(code => code && transformLazyToAsyncCode(code))
         
         return Promise.all([fCode, fLazyCode, fAsyncCode])
-          .then(([fCode, fLazyCode, fAsyncCode]) => ({name, fCode, fLazyCode, fAsyncCode}));
+          .then(([fCode, fLazyCode, fAsyncCode]) => ({
+            name,
+            fCode: nsh.highlight(fCode, jsh),
+            fLazyCode: fLazyCode && nsh.highlight(fLazyCode, jsh),
+            fAsyncCode: fAsyncCode && nsh.highlight(fAsyncCode, jsh),
+          }));
       })
   )
   .then(data => Promise.all(data))

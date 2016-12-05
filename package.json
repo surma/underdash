@@ -2,7 +2,8 @@
   "name": "underdash",
   "version": "0.0.1",
   "dependencies": {
-    "handlebars": "^4.0.6"
+    "handlebars": "^4.0.6",
+    "node-syntaxhighlighter": "^0.8.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

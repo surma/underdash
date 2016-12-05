@@ -30,19 +30,7 @@
        */
       font-size: calc(64rem / 71); 
     }
-    pre, code {
-      font-family: monospace;
-      font-size: 1rem;
-      letter-spacing: -1.2px;
-    }
-    .font-loaded pre, .font-loaded code {
-      /* Ratio of 'Source Code Pro' (weight: 200) to sans-serif
-       * Determined using https://meowni.ca/font-style-matcher/
-       */
-      font-size: calc(64rem / 70);
-      letter-spacing: 0;
-      font-weight: 200;
-    }
+
     h1, h2, h3 {
       text-align: justify;
       text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
@@ -65,7 +53,6 @@
       border: 0;
       border-top: 1px solid black;
       margin: 0 0 2rem 0;
-      overflow: hidden;
     }
     #listing {
       width: 100%;
@@ -89,13 +76,12 @@
       flex-basis: calc(100% + 1rem);
       flex-shrink: 0;
     }
-    .code {
+    .codeblock {
       border: 1px solid black;
       background-color: hsla(0, 0%, 100%, 0.54);
       padding: 0.5rem 1rem;
       margin: 0;
       display: none;
-      overflow: auto;
       flex-basis: 100%;
       flex-shrink: 0;
     }
@@ -117,11 +103,32 @@
     input.codeselector.fasynccode:checked ~ label.codeselector.fasynccode {
       background-color: hsla(50, 100%, 80%, 0.54);
     }
-    input.codeselector.fcode:checked ~ .code.fcode,
-    input.codeselector.flazycode:checked ~ .code.flazycode,
-    input.codeselector.fasynccode:checked ~ .code.fasynccode {
+    input.codeselector.fcode:checked ~ .codeblock.fcode,
+    input.codeselector.flazycode:checked ~ .codeblock.flazycode,
+    input.codeselector.fasynccode:checked ~ .codeblock.fasynccode {
       display: block;
     }
+    .syntaxhighlighter.syntaxhighlighter,
+    .syntaxhighlighter table div.line.line.line {
+      background-color: transparent !important;
+    }
+    .syntaxhighlighter code,
+    .syntaxhighlighter .gutter div {
+      font-family: monospace !important;
+      font-size: 1rem !important;
+      letter-spacing: -1.2px !important;
+    }
+    .font-loaded .syntaxhighlighter code,
+    .font-loaded .syntaxhighlighter .gutter div {
+      /* Ratio of 'Source Code Pro' (weight: 200) to sans-serif
+       * Determined using https://meowni.ca/font-style-matcher/
+       */
+      font-family: 'Source Code Pro' !important;
+      font-size: calc(64rem / 70) !important;
+      letter-spacing: 0 !important;
+      font-weight: 200 !important;
+    }
+
   </style>
   <title>Underdash</title>
 </head>
@@ -145,20 +152,25 @@
         {{#if fAsyncCode}}
         <label class="codeselector fasynccode" for="{{name}}_radio_fasync">Async Iter</label>
         {{/if}}
-        <pre class="code fcode"><code>{{fCode}}</code></pre>
-        <pre class="code flazycode"><code>{{fLazyCode}}</code></pre>
-        <pre class="code fasynccode"><code>{{fAsyncCode}}</code></pre>
+        <div class="codeblock fcode">{{{fCode}}}</div>
+        <div class="codeblock flazycode">{{{fLazyCode}}}</div>
+        <div class="codeblock fasynccode">{{{fAsyncCode}}}</div>
       </section>
     {{/each}}
   </div>
   <script>
     (function () {
-      const link = document.createElement('link');
-      link.href = "https://fonts.googleapis.com/css?family=Exo+2:100|Source+Code+Pro:200";
-      link.rel = "stylesheet";
-      link.onload = _ => document.body.classList.add('font-loaded');
-      document.head.appendChild(link);
+      [
+        'https://fonts.googleapis.com/css?family=Exo+2:100|Source+Code+Pro:200',
+        'shCoreDefault.css'
+      ]
+      .forEach(href => {
+        const link = document.createElement('link');
+        link.href = href;
+        link.rel = "stylesheet";
+        link.onload = _ => document.body.classList.add('font-loaded');
+        document.head.appendChild(link);
+      })
     })();
   </script>
 </body>
-
