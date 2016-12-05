@@ -40,6 +40,6 @@ fs.readFile('site/index.hbs')
 
 function transformLazyToAsyncCode(code) {
   return code
-    .replace('function* ', 'async function* ')
-    .replace('for (', 'for await (');
+    .replace(/function/, 'async function')
+    .replace(/for\s*\(/, 'for await (');
 }
