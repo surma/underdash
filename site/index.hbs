@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=yes" />
+  <meta name="viewport" content="initial-scale=1, min-scale=1, width=device-width, user-scalable=yes" />
   <style>
     * {
       box-sizing: border-box;
@@ -32,7 +32,7 @@
     }
 
     h1, h2, h3 {
-      text-align: justify;
+      text-align: center;
       text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
       margin: 0.5em 0;
       font-weight: 300;
@@ -42,9 +42,6 @@
     }
     h2 {
       font-size: 1.4rem;
-    }
-    h3 {
-
     }
     .subtitle {
       margin-top: -2rem;
@@ -57,24 +54,41 @@
     #listing {
       width: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding-bottom: 2rem;
     }
     .function {
+      width: 100%;
       flex-basis: 100%;
       display: flex;
       flex-wrap: wrap;
+      flex-shrink: 1;
+      align-content: flex-start;
     }
     .function:before {
       display: block;
+      flex-shrink: 0;
       content: attr(data-function-name);
       text-align: left;
       font-size: 1.2rem;
       background-color: hsla(0, 0%, 0%, 0.3);
-      margin: 1rem 0 1rem -1.5rem;
+      margin: 2rem 0 1rem -1.5rem;
       
       padding: 1rem;
       flex-basis: calc(100% + 1rem);
-      flex-shrink: 0;
+    }
+    @media (min-width: 1000px) {
+      .function {
+        flex-basis: calc(50% - 4rem);
+        width: calc(50% - 4rem);
+      }
+      .function:before {
+        margin-left: 0;
+        flex-basis: 100%;
+        flex-shrink: 1;
+      }
     }
     .codeblock {
       border: 1px solid black;
@@ -83,7 +97,9 @@
       margin: 0;
       display: none;
       flex-basis: 100%;
-      flex-shrink: 0;
+      flex-shrink: 1;
+      overflow: auto;
+      align-self: stretch;
     }
     input.codeselector {
       display: none;
