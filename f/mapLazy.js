@@ -5,4 +5,4 @@ function* map(it, f) {
 
 // Example:
 map([1, 2, 3], e => e*e)
-// return [1, 4, 9]
+// returns [1, 4, 9]

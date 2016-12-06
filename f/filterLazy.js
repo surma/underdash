@@ -7,4 +7,4 @@ function* filter(it, f) {
 
 // Example:
 filter([1, 2, 3, 4], e => e % 2 == 0);
-// return [2, 4]
+// returns [2, 4]

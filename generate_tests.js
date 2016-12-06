@@ -1,8 +1,13 @@
 const fs = require('mz/fs');
 
-Array.prototype.takeWhile = function takeWhile(f) {
+Array.prototype.takeWhile = function (f) {
   let ok = true;
   return this.filter(e => ok && (ok = f(e)));
+};
+
+Array.prototype.dropUntil = function (f) {
+  let ok = false;
+  return this.filter(e => ok || (ok = f(e)));
 };
 
 function removeExampleCode(code) {
@@ -10,6 +15,23 @@ function removeExampleCode(code) {
     .split('\n')
     .takeWhile(line => !line.startsWith('// Example'))
     .join('');
+}
+
+function extractExampleTest(code, isGenerator) {
+  const example = code
+    .split('\n')
+    .dropUntil(line => line === '// Example:')
+    .slice(1);
+  if (example.length < 2 || !example[1].startsWith('// returns'))
+    return '';
+  const expected = example[1].replace('// returns ', '');
+  return `
+    const r = ${example[0].replace(/;$/, '')}
+    if (${isGenerator})
+      expect(Array.from(r)).to.deep.equal(${expected});
+    else
+      expect(r).to.deep.equal(${expected});
+  `;
 }
 
 const templateTag = 
@@ -27,6 +49,7 @@ const asyncFuncWrapper = templateTag`
     return origF(...args);
   };
   const origF = ${'func'};
+  const ${'oldName'} = f;
 `;
 
 boilerplate = templateTag`
@@ -39,6 +62,10 @@ boilerplate = templateTag`
 
     describe('${'name'}', function () {
       ${'test'}
+      it('has correct example code', function () {
+        ${'func'}
+        ${'example'}
+      });
     });
   })(this);
 `;
@@ -65,17 +92,21 @@ fs.readdir('test')
             const code = boilerplate({
               name,
               func: removeExampleCode(fCode.toString()),
-              test: testCode.toString()
+              test: testCode.toString(),
+              example: extractExampleTest(fCode.toString())
             });
             testFiles.push(fs.writeFile(`test/${name}.test.boilerplated.js`, code));
           }
           if (!files.includes(`${name}Lazy.test.js`) && fLazyCode && !fLazyCode.startsWith('//!')) {
+            const isGenerator = /function\*/.test(fLazyCode.split('\n')[0]);
             const code = boilerplate({
               name: `${name}Lazy`,
               func: asyncFuncWrapper({
+                oldName: name,
                 func: removeExampleCode(fLazyCode),
-                isGenerator: /function\*/.test(fLazyCode.split('\n')[0])
+                isGenerator
               }),
+              example: extractExampleTest(fLazyCode.toString(), isGenerator),
               test: testCode.toString()
             });
             testFiles.push(fs.writeFile(`test/${name}Lazy.test.boilerplated.js`, code));

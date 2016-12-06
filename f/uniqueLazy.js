@@ -4,7 +4,7 @@ function* unique(it, f) {
     const fv = f(v);
     if (buffer.indexOf(fv) !== -1) continue;
     buffer.push(fv);
-    yield fv;
+    yield v;
   }
 }
 
