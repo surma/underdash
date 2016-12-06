@@ -89,7 +89,7 @@
       flex-wrap: wrap;
       justify-content: space-around;
     }
-    .function {
+    .underdashfunction {
       max-width: 100%;
       width: 100%;
       flex-basis: 100%;
@@ -99,7 +99,7 @@
       align-content: flex-start;
       margin-bottom: 2rem;
     }
-    .function:before {
+    .underdashfunction:before {
       display: block;
       flex-shrink: 0;
       content: attr(data-function-name);
@@ -112,12 +112,12 @@
       flex-basis: calc(100% + 1rem);
     }
     @media (min-width: 1000px) {
-      .function {
+      .underdashfunction {
         flex-basis: calc(50% - 4rem);
         width: calc(50% - 4rem);
         max-width: calc(50% - 4rem);
       }
-      .function:before {
+      .underdashfunction:before {
         margin-left: 0;
         flex-basis: 100%;
         flex-shrink: 1;
@@ -157,19 +157,12 @@
     input.codeselector.fasynccode:checked ~ .codeblock.fasynccode {
       display: block;
     }
-    .syntaxhighlighter.syntaxhighlighter,
-    .syntaxhighlighter table div.line.line.line {
-      background-color: transparent !important;
-    }
-    .syntaxhighlighter code,
-    .syntaxhighlighter .gutter div {
+    pre.codeblock {
       font-family: monospace !important;
       font-size: 1rem !important;
       letter-spacing: -1.2px !important;
     }
-    .font-loaded .syntaxhighlighter code,
-    .font-loaded .syntaxhighlighter div,
-    .font-loaded .syntaxhighlighter .gutter div {
+    .font-loaded pre.codeblock {
       /* Ratio of 'Source Code Pro' (weight: 200) to sans-serif
        * Determined using https://meowni.ca/font-style-matcher/
        */
@@ -211,7 +204,7 @@
   <hr>
   <div id="listing">
     {{#each functions}}
-      <section class="function" data-function-name="{{name}}" id="{{name}}">
+      <section class="underdashfunction" data-function-name="{{name}}" id="{{name}}">
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fcode" class="codeselector fcode" checked>
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_flazy" class="codeselector flazycode">
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fasync" class="codeselector fasynccode">
@@ -222,9 +215,9 @@
         {{#if fAsyncCode}}
         <label class="codeselector fasynccode" for="{{name}}_radio_fasync">Async Iter</label>
         {{/if}}
-        <div class="codeblock fcode">{{{fCode}}}</div>
-        <div class="codeblock flazycode">{{{fLazyCode}}}</div>
-        <div class="codeblock fasynccode">{{{fAsyncCode}}}</div>
+        <pre class="codeblock fcode">{{{fCode}}}</pre>
+        <pre class="codeblock flazycode">{{{fLazyCode}}}</pre>
+        <pre class="codeblock fasynccode">{{{fAsyncCode}}}</pre>
       </section>
     {{/each}}
   </div>
@@ -235,7 +228,7 @@
     (function () {
       [
         'https://fonts.googleapis.com/css?family=Exo+2:100,300|Source+Code+Pro:200',
-        'shCoreDefault.css'
+        'prism.css'
       ]
       .forEach(href => {
         const link = document.createElement('link');

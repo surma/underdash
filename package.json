@@ -4,7 +4,7 @@
   "dependencies": {
     "handlebars": "^4.0.6",
     "mz": "^2.6.0",
-    "node-syntaxhighlighter": "^0.8.1"
+    "prismjs": "^1.6.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

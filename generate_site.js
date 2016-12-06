@@ -1,7 +1,6 @@
 const handlebars = require('handlebars');
 const fs = require('mz/fs');
-const nsh = require('node-syntaxhighlighter')
-const jsh = nsh.getLanguage('js');
+const prism = require('prismjs');
 
 const data = fs.readdir('f')
   .then(files => 
@@ -23,9 +22,9 @@ const data = fs.readdir('f')
         return Promise.all([fCode, fLazyCode, fAsyncCode])
           .then(([fCode, fLazyCode, fAsyncCode]) => ({
             name,
-            fCode: nsh.highlight(fCode, jsh),
-            fLazyCode: fLazyCode && nsh.highlight(fLazyCode, jsh),
-            fAsyncCode: fAsyncCode && nsh.highlight(fAsyncCode, jsh),
+            fCode: prism.highlight(fCode, prism.languages.javascript),
+            fLazyCode: fLazyCode && prism.highlight(fLazyCode, prism.languages.javascript),
+            fAsyncCode: fAsyncCode && prism.highlight(fAsyncCode, prism.languages.javascript),
           }));
       })
   )
