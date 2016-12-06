@@ -1,1 +1,1 @@
-//! Array.prototype.every
+// Already defined on arrays

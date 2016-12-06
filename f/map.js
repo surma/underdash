@@ -1,1 +1,1 @@
-//! Array.prototype.map
+// Already defined on arrays

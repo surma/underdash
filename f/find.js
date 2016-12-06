@@ -1,1 +1,1 @@
-//! Array.prototype.find
+// Already defined on arrays

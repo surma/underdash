@@ -1,1 +1,1 @@
-//! Array.prototype.reduce
+// Already defined on arrays

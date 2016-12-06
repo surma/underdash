@@ -1,1 +1,1 @@
-//! Array.prototype.forEach
+// Already defined on arrays

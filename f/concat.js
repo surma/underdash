@@ -1,1 +1,1 @@
-//! Array.prototype.concat
+// Already defined on arrays
