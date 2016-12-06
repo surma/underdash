@@ -1,6 +1,7 @@
 const handlebars = require('handlebars');
 const fs = require('mz/fs');
 const prism = require('prismjs');
+const htmlminify = require('html-minifier').minify;
 
 const data = fs.readdir('f')
   .then(files => 
@@ -36,6 +37,12 @@ const data = fs.readdir('f')
 fs.readFile('site/index.hbs')
   .then(file => Promise.all([data, file.toString()]))
   .then(([data, template]) => handlebars.compile(template)(data))
+  .then(content => htmlminify(content, {
+    minifyCSS: true,
+    minifyJS: true,
+    removeAttributeQuotes: true,
+    collapseWhitespace: true
+  }))
   .then(content => fs.writeFile('site/index.html', content))
   .then(_ => console.log('Done.'))
   .catch(err => console.error(err.toString()));
