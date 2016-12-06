@@ -1,6 +1,6 @@
-function zip(a, b) {
-  const maxLength = Math.min(a.length, b.length);
-  return a
-    .map((e, i) => [e, i < b.length && b[i]])
-    .slice(0, maxLength);
+function zip(...arrs) {
+  const resultLength = arrs.map(a => a.length).reduce((a, b) => a<b?a:b, arrs[0].length);
+  return new Array(resultLength)
+    .fill(0)
+    .map((_, i) => arrs.map(a => a[i]));
 }

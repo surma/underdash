@@ -6,7 +6,7 @@ const jsh = nsh.getLanguage('js');
 const data = fs.readdir('f')
   .then(files => 
     files
-      .filter(f => !/Lazy.js/.test(f))
+      .filter(f => !/(Lazy|Async).js/.test(f))
       .sort()
       .map(filename => {
         const name = filename.replace(/\.js$/, '');
