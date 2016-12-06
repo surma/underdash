@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "node generate_site.js",
+    "watch": "watch -n1 npm run build",
     "test": "node generate_tests.js && npm run test-node && npm run test-browser",
     "test-node": "mocha test/*.test.boilerplated.js",
     "test-browser": "karma start"
