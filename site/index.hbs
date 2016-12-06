@@ -171,7 +171,15 @@
       letter-spacing: 0 !important;
       font-weight: 200 !important;
     }
-
+    a.btt {
+      display: block;
+      flex-basis: 100%;
+      align-self: stretch;
+      text-align: right;
+      font-size: 0.7rem;
+      margin-top: 1rem;
+      text-decoration: none;
+    }
   </style>
   <title>Underdash</title>
 </head>
@@ -196,7 +204,7 @@
     Bug fixes, additions or discussion are welcome on <a href="https://github.com/surma/underdash">GitHub</a>. 
   </p>
   <hr>
-    <nav>
+    <nav id="toc">
       {{#each functions}}
       <a href="#{{name}}">{{name}}</a>, 
       {{/each}}
@@ -218,6 +226,7 @@
         <pre class="codeblock fcode">{{{fCode}}}</pre>
         <pre class="codeblock flazycode">{{{fLazyCode}}}</pre>
         <pre class="codeblock fasynccode">{{{fAsyncCode}}}</pre>
+        <a href="#toc" class="btt">Back to top</a>
       </section>
     {{/each}}
   </div>
