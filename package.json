@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "handlebars": "^4.0.6",
+    "mz": "^2.6.0",
     "node-syntaxhighlighter": "^0.8.1"
   },
   "devDependencies": {
@@ -10,10 +11,10 @@
     "karma": "^1.3.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-mocha": "^1.3.0",
-    "mocha": "^3.1.2",
-    "mz": "^2.6.0"
+    "mocha": "^3.1.2"
   },
   "scripts": {
+    "build": "node generate_site.js",
     "test": "node generate_tests.js && npm run test-node && npm run test-browser",
     "test-node": "mocha test/*.test.boilerplated.js",
     "test-browser": "karma start"
