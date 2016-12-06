@@ -30,7 +30,6 @@
        */
       font-size: calc(64rem / 71); 
     }
-
     h1, h2, h3 {
       text-align: center;
       text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
@@ -43,13 +42,41 @@
     h2 {
       font-size: 1.4rem;
     }
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 3rem;
+      }
+      h2 {
+        font-size: 1.05rem;
+      }
+    }
     .subtitle {
       margin-top: -2rem;
     }
+    p.intro {
+      max-width: 720px;
+      margin: 1rem auto;
+    }
+    p.intro:last-of-type {
+      margin-bottom: 0;
+    }
+    dl {
+      max-width: 720px;
+      margin: 1rem auto;x
+    }
+    dt {
+      font-weight: 300;
+    }
     hr {
       border: 0;
-      border-top: 1px solid black;
-      margin: 0 0 2rem 0;
+      border-top: 1px solid hsla(0, 0%, 0%, 0.3);
+      box-shadow: 0 0 4px hsla(0, 0%, 0%, 0.2);
+      margin: 2rem 0 2rem -0.75rem;
+      width: calc(100% + 1.5rem);
+    }
+    nav {
+      max-width: 720px;
+      margin: 0 auto;
     }
     #listing {
       width: 100%;
@@ -57,7 +84,6 @@
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-around;
-      padding-bottom: 2rem;
     }
     .function {
       width: 100%;
@@ -66,6 +92,7 @@
       flex-wrap: wrap;
       flex-shrink: 1;
       align-content: flex-start;
+      margin-bottom: 2rem;
     }
     .function:before {
       display: block;
@@ -73,8 +100,8 @@
       content: attr(data-function-name);
       text-align: left;
       font-size: 1.2rem;
-      background-color: hsla(0, 0%, 0%, 0.3);
-      margin: 2rem 0 1rem -1.5rem;
+      background-color: hsla(0, 0%, 0%, 0.1);
+      margin: 0rem 0 1rem -1.5rem;
       
       padding: 1rem;
       flex-basis: calc(100% + 1rem);
@@ -151,13 +178,33 @@
 <body>
   <h1 class="title">Underdash</h1>
   <h2 class="subtitle">Just copy/paste what’cha need</h2>
-  <p>
-    Underdash is a collection of short snippets that implement many of collection manipulation functions known from <a href="https://lodash.com/" rel="noopener" target="_blank">Lo-Dash</a>, <a href="http://underscorejs.org/">UnderscoreJS</a> or functional programming languages. Underdash is an experiment to utilize ESnext features to make the implementation more concise and asynchronous.
+  <p class="intro">
+    Underdash is a collection of snippets for array and iterator manipulation. It’s <em>not</em> meant to be a library and is therefore not provided as a bundled .js file. The individual implementations are supposed to be short and concise enough that the code can be immediately understood and be copy-pasted. If a function doesn’t <em>quite</em> do what you want, you should feel comfortable adjusting and augmenting the snippet.
   </p>
+  <p class="intro">
+    Each function is provided in up to 3 flavors: 
+    <dl>
+      <dt>The Array versions</dt>
+      <dd>Work on arrays and should yield behavior similar to the functions provided by <a href="https://lodash.com" target="_blank" rel="noopener">LoDash</a> or <a href="http://underscorejs.org/" target="_blank" rel="noopener">UnderscoreJS</a>.</dd>
+      <dt>The Synchronous Iterator versions</dt>
+      <dd>Are implemented using generators and work with any (non-asynchronous) iterable. They are effectively lazy implementations.</dd>
+      <dt>The Asynchronous Iterator versions</dt>
+      <dd>Are implemented using asynchronous generators and work with any iterable. They are effectively lazy implementations.</dd>
+    </dl>
+  </p>
+  <p class="intro">
+    Bug fixes, additions or discussion are welcome on <a href="https://github.com/surma/underdash">GitHub</a>. 
+  </p>
+  <hr>
+    <nav>
+      {{#each functions}}
+      <a href="#{{name}}">{{name}}</a>, 
+      {{/each}}
+    </nav>
   <hr>
   <div id="listing">
     {{#each functions}}
-      <section class="function" data-function-name="{{name}}">
+      <section class="function" data-function-name="{{name}}" id="{{name}}">
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fcode" class="codeselector fcode" checked>
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_flazy" class="codeselector flazycode">
         <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fasync" class="codeselector fasynccode">
@@ -174,10 +221,13 @@
       </section>
     {{/each}}
   </div>
+  <footer>
+    Built with 🐳 by <a href="https://twitter.com/DasSurma" target="_blank" rel="noopener">Surma</a>, Apache-2.0 license.
+  </footer>
   <script>
     (function () {
       [
-        'https://fonts.googleapis.com/css?family=Exo+2:100|Source+Code+Pro:200',
+        'https://fonts.googleapis.com/css?family=Exo+2:100,300|Source+Code+Pro:200',
         'shCoreDefault.css'
       ]
       .forEach(href => {

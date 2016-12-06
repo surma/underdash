@@ -7,6 +7,7 @@ const data = fs.readdir('f')
   .then(files => 
     files
       .filter(f => !/Lazy.js/.test(f))
+      .sort()
       .map(filename => {
         const name = filename.replace(/\.js$/, '');
         const fCode = fs.readFile(`f/${name}.js`).then(buffer => buffer.toString());
