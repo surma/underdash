@@ -15,9 +15,11 @@ const data = fs.readdir('f')
         const fAsyncCode = 
           fs.readFile(`f/${name}Async.js`)
             .then(buffer => buffer.toString())
-            .catch(_ => fLazyCode)
-            .then(code => code && transformLazyToAsyncCode(code))
-        
+            .catch(_ => 
+              fLazyCode
+                .then(code => code && transformLazyToAsyncCode(code))
+            );
+
         return Promise.all([fCode, fLazyCode, fAsyncCode])
           .then(([fCode, fLazyCode, fAsyncCode]) => ({
             name,
