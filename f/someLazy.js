@@ -3,3 +3,7 @@ function some(it, f) {
     if(f(v)) return true;
   return false;
 }
+
+// Example:
+some([1, 2, 3, 4], e => e % 3 === 0);
+// returns true

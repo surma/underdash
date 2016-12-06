@@ -3,3 +3,7 @@ function every(it, f) {
   for (let v of it) ok = ok && f(v);
   return ok;
 }
+
+// Example:
+every([1, 2, 3, 4], e => e < 5);
+// returs true

@@ -6,4 +6,8 @@ function* unique(it, f) {
     buffer.push(fv);
     yield fv;
   }
-} 
+}
+
+// Example:
+unique([{i:0,v:2},{i:1,v:3},{i:2,v:2}], e => e.v);
+// returns [{i:0,v:2},{i:1,v:3}]

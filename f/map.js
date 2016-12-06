@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.map(e => transform(e));
+// Example:
+[1, 2, 3].map(e => e*e)
+// return [1, 4, 9]

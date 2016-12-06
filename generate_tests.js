@@ -1,5 +1,17 @@
 const fs = require('mz/fs');
 
+Array.prototype.takeWhile = function takeWhile(f) {
+  let ok = true;
+  return this.filter(e => ok && (ok = f(e)));
+};
+
+function removeExampleCode(code) {
+  return code
+    .split('\n')
+    .takeWhile(line => !line.startsWith('// Example'))
+    .join('');
+}
+
 const templateTag = 
   (strings, ...keys) =>
     dict => 
@@ -52,7 +64,7 @@ fs.readdir('test')
           if (!fCode.startsWith('// Already defined')) {
             const code = boilerplate({
               name,
-              func: fCode.toString(),
+              func: removeExampleCode(fCode.toString()),
               test: testCode.toString()
             });
             testFiles.push(fs.writeFile(`test/${name}.test.boilerplated.js`, code));
@@ -61,7 +73,7 @@ fs.readdir('test')
             const code = boilerplate({
               name: `${name}Lazy`,
               func: asyncFuncWrapper({
-                func: fLazyCode,
+                func: removeExampleCode(fLazyCode),
                 isGenerator: /function\*/.test(fLazyCode.split('\n')[0])
               }),
               test: testCode.toString()

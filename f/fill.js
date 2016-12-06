@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.fill(0);
+// Example:
+[1, 2, 3].fill(0);
+// returns [0, 0, 0]

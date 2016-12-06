@@ -1,2 +1,3 @@
 // Already defined on arrays
-arr.forEach(e => console.log(e));
+// Example:
+[1, 2, 3].forEach(i => console.log(i));

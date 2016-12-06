@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.find(e => e > 5);
+// Example:
+[1, 2, 3, 4].find(e => e > 2);
+// returns 3

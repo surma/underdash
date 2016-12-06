@@ -6,3 +6,7 @@ function* flatten(it) {
       yield v;
   }
 }
+
+// Example:
+flatten([1, [2, 3], [[4]]]);
+// returns [1, 2, 3, [4]

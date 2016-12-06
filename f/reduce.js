@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.reduce((acc, e) => acc + e, 0);
+// Example:
+[1, 2, 3].reduce((acc, cur) => acc + cur, 0);
+// returns 6

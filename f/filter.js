@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.filter(e => e > 5);
+// Example:
+[1, 2, 3, 4].filter(e => e % 2 == 0);
+// return [2, 4]

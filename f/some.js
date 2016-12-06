@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.some(e => e > 5);
+// Example:
+[1, 2, 3, 4].some(e => e % 3 === 0);
+// returns true

@@ -1,2 +1,4 @@
 // Already defined on arrays
-arr.every(e => e > 5);
+// Example:
+[1, 2, 3, 4].every(e < 5);
+// returns true

@@ -6,3 +6,7 @@ function shuffle(arr) {
   }
   return a;
 }
+
+// Example:
+shuffle([1, 2, 3, 4])
+// might return [2, 4, 1, 3] (or something)
