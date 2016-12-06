@@ -128,6 +128,7 @@
       }
     }
     .codeblock {
+      position: relative;
       border: 1px solid black;
       background-color: hsla(0, 0%, 100%, 0.54);
       padding: 0.5rem 1rem;
@@ -137,6 +138,17 @@
       flex-shrink: 1;
       overflow: auto;
       align-self: stretch;
+    }
+    .codeblock .copy {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 0;
+      background-color: hsla(0, 0%, 0%, 0.54);
+      color: white;
+      font-family: inherit;
+      font-size: 0.8em;
+      padding: 0.5em;
     }
     input.codeselector {
       display: none;
@@ -213,9 +225,9 @@
         {{#if fAsyncCode}}
         <label class="codeselector fasynccode" for="{{name}}_radio_fasync">Async Iter</label>
         {{/if}}
-        <pre class="codeblock fcode">{{{fCode}}}</pre>
-        <pre class="codeblock flazycode">{{{fLazyCode}}}</pre>
-        <pre class="codeblock fasynccode">{{{fAsyncCode}}}</pre>
+        <pre class="codeblock fcode"><button class="copy">Copy to clipboard</button>{{{fCode}}}</pre>
+        <pre class="codeblock flazycode"><button class="copy">Copy to clipboard</button>{{{fLazyCode}}}</pre>
+        <pre class="codeblock fasynccode"><button class="copy">Copy to clipboard</button>{{{fAsyncCode}}}</pre>
         <a href="#toc" class="btt">Back to top</a>
       </section>
     {{/each}}
@@ -250,7 +262,24 @@
         link.rel = "stylesheet";
         link.onload = _ => document.body.classList.add('font-loaded');
         document.head.appendChild(link);
-      })
+      });
+
+      Array.from(document.querySelectorAll('button.copy')).forEach(btn => {
+        btn.onclick = evt => {
+          const btn = event.target;
+          const ctr = event.target.parentNode;
+          const ta = document.createElement('textarea');
+          ctr.removeChild(btn);
+          ta.value = ctr.textContent;
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand('copy');
+          } catch(e) {}
+          document.body.removeChild(ta);
+          ctr.prepend(btn);
+        };
+      });
     })();
   </script>
 </body>
