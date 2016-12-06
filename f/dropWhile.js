@@ -1,4 +1,4 @@
-function dropWhile(f) {
+function dropWhile(arr, f) {
   let ok = false;
-  return this.filter(e => ok || (ok = !f(e)));
+  return arr.filter(e => ok || (ok = !f(e)));
 };

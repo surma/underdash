@@ -1,4 +1,4 @@
-function unique(f) {
-  const vArr = this.map(f);
-  return this.filter((_, i) => vArr.indexOf(vArr[i]) === i);
+function unique(arr, f) {
+  const vArr = arr.map(f);
+  return arr.filter((_, i) => vArr.indexOf(vArr[i]) === i);
 };

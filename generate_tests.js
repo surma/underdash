@@ -11,8 +11,8 @@ const templateTag =
 const asyncFuncWrapper = templateTag`
   function f(...args) {
     if (${'isGenerator'})
-      return Array.from(origF(this, ...args));
-    return origF(this, ...args);
+      return Array.from(origF(...args));
+    return origF(...args);
   };
   const origF = ${'func'};
 `;

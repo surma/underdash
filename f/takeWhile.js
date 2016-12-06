@@ -1,4 +1,4 @@
-function takeWhile(f) {
+function takeWhile(arr, f) {
   let ok = true;
-  return this.filter(e => ok && (ok = f(e)));
+  return arr.filter(e => ok && (ok = f(e)));
 };
