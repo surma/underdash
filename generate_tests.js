@@ -49,7 +49,7 @@ fs.readdir('test')
           let testFiles = [];
           fCode = fCode.toString();
           fLazyCode = fLazyCode && fLazyCode.toString();
-          if (!fCode.startsWith('//!')) {
+          if (!fCode.startsWith('// Already defined')) {
             const code = boilerplate({
               name,
               func: fCode.toString(),
