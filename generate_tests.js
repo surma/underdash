@@ -10,11 +10,26 @@ Array.prototype.dropUntil = function (f) {
   return this.filter(e => ok || (ok = f(e)));
 };
 
+Array.prototype.unique = function (f) {
+  const vArr = this.map(f);
+  return this.filter((_, i) => vArr.indexOf(vArr[i]) === i);
+}
+
+function prepareFile(f) {
+  return f
+    .toString()
+    .split('\n')
+    .dropUntil(line => line.endsWith('*/'))
+    .slice(1)
+    .dropUntil(line => !/^\s*$/.test(line))
+    .join('\n');
+}
+
 function removeExampleCode(code) {
   return code
     .split('\n')
     .takeWhile(line => !line.startsWith('// Example'))
-    .join('');
+    .join('\n');
 }
 
 function extractExampleTest(code, isGenerator) {
@@ -70,7 +85,7 @@ boilerplate = templateTag`
   })(this);
 `;
 
-const filterRegex = /([^.]+)\.test\.js/;
+const filterRegex = /^([^.]+)\.test\.js/;
 
 fs.readdir('test')
   .then(files => 
@@ -79,25 +94,23 @@ fs.readdir('test')
       .map(f => {
         const name = filterRegex.exec(f)[1];
         return Promise.all([
-          fs.readFile(`test/${f}`),
-          fs.readFile(`f/${name}.js`),
-          fs.readFile(`f/${name}Lazy.js`).catch(_ => {}),
+          fs.readFile(`test/${f}`).then(prepareFile),
+          fs.readFile(`f/${name}.js`).then(prepareFile),
+          fs.readFile(`f/${name}Lazy.js`).then(prepareFile).catch(_ => {}),
           name
         ])
         .then(([testCode, fCode, fLazyCode, name]) => {
           let testFiles = [];
-          fCode = fCode.toString();
-          fLazyCode = fLazyCode && fLazyCode.toString();
           if (!fCode.startsWith('// Already defined')) {
             const code = boilerplate({
               name,
-              func: removeExampleCode(fCode.toString()),
-              test: testCode.toString(),
-              example: extractExampleTest(fCode.toString())
+              func: removeExampleCode(fCode),
+              test: testCode,
+              example: extractExampleTest(fCode)
             });
             testFiles.push(fs.writeFile(`test/${name}.test.boilerplated.js`, code));
           }
-          if (!files.includes(`${name}Lazy.test.js`) && fLazyCode && !fLazyCode.startsWith('//!')) {
+          if (!files.includes(`${name}Lazy.test.js`) && fLazyCode) {
             const isGenerator = /function\*/.test(fLazyCode.split('\n')[0]);
             const code = boilerplate({
               name: `${name}Lazy`,
@@ -106,8 +119,8 @@ fs.readdir('test')
                 func: removeExampleCode(fLazyCode),
                 isGenerator
               }),
-              example: extractExampleTest(fLazyCode.toString(), isGenerator),
-              test: testCode.toString()
+              example: extractExampleTest(fLazyCode, isGenerator),
+              test: testCode
             });
             testFiles.push(fs.writeFile(`test/${name}Lazy.test.boilerplated.js`, code));
           }
