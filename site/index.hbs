@@ -144,21 +144,19 @@
       width: 100%;
       flex-basis: 100%;
       display: flex;
-      flex-wrap: wrap;
-      flex-shrink: 1;
-      align-content: flex-start;
+      flex-direction: column;
+      align-items: stretch;
       margin-bottom: 2rem;
     }
     .underdashfunction:before {
       display: block;
-      flex-shrink: 0;
       content: attr(data-function-name);
       text-align: left;
       font-size: 1.2rem;
+      line-height: 1.2rem;
       background-color: hsla(0, 0%, 0%, 0.1);
       margin: 0rem 0 1rem -1.5rem;
       padding: 1rem 1.5rem;
-      flex-basis: calc(100% + 1rem);
     }
     .underdashfunction:last-of-type {
       margin-bottom: 0;
@@ -171,21 +169,15 @@
       }
       .underdashfunction:before {
         margin-left: 0;
-        flex-basis: 100%;
-        flex-shrink: 1;
       }
     }
     .codeblock {
-      position: relative;
+      display: block;
       border: 1px solid black;
       background-color: hsla(0, 0%, 100%, 0.54);
       padding: 0.5rem 1rem;
       margin: 0;
-      display: none;
-      flex-basis: 100%;
-      flex-shrink: 1;
       overflow: auto;
-      align-self: stretch;
       line-height: 1.4em;
     }
     @media (max-width: 470px) {
@@ -193,7 +185,7 @@
         padding-top: 2rem;
       }
     }
-    .codeblock .copy {
+    .copy {
       position: absolute;
       top: 0;
       right: 0;
@@ -203,29 +195,6 @@
       font-family: inherit;
       font-size: 0.8em;
       padding: 0.5em;
-    }
-    input.codeselector {
-      display: none;
-    }
-    label.codeselector {
-      padding: 0.5rem 1rem;
-      background-color: hsla(0, 0%, 100%, 0.54);
-      border: 1px solid black;
-      border-right: 0;
-      border-bottom: 0;
-    }
-    label.codeselector:last-of-type {
-      border-right: 1px solid black;
-    }
-    input.codeselector.fcode:checked ~ label.codeselector.fcode,
-    input.codeselector.flazycode:checked ~ label.codeselector.flazycode,
-    input.codeselector.fasynccode:checked ~ label.codeselector.fasynccode {
-      background-color: hsla(50, 100%, 80%, 0.54);
-    }
-    input.codeselector.fcode:checked ~ .codeblock.fcode,
-    input.codeselector.flazycode:checked ~ .codeblock.flazycode,
-    input.codeselector.fasynccode:checked ~ .codeblock.fasynccode {
-      display: block;
     }
     pre.codeblock {
       font-family: monospace !important;
@@ -256,6 +225,36 @@
     footer {
       margin-bottom: 0 !important;
     }
+
+    .tabpanel .tablist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+    }
+    .tabpanel .tablist .tab {
+      padding: 0.5rem 1rem;
+      background-color: hsla(0, 0%, 100%, 0.54);
+      border: 1px solid black;
+      border-right: 0;
+      border-bottom: 0;
+    }
+    .tabpanel .tablist .tab:last-of-type {
+      border-right: 1px solid black;
+    }
+    .tabpanel .tablist .tab.selected {
+      background-color: hsla(50, 100%, 80%, 0.54);
+    }
+
+    .tabpanel .panel {
+      position: relative;
+      display: block;
+    }
+    .tabpanel .hidden {
+      display: none;
+    }
+
   </style>
   <title>Underdash</title>
 </head>
@@ -270,22 +269,29 @@
   </nav>
   <div id="listing">
     {{#each functions}}
-      <section class="underdashfunction" data-function-name="{{name}}" id="{{name}}">
-        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fcode" class="codeselector fcode" checked>
-        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_flazy" class="codeselector flazycode">
-        <input type="radio" name="{{name}}_radio" id="{{name}}_radio_fasync" class="codeselector fasynccode">
-        <label class="codeselector fcode" for="{{name}}_radio_fcode" tabindex="0">Arrays</label>
-        {{#if fLazyCode}}
-        <label class="codeselector flazycode" for="{{name}}_radio_flazy" tabindex="0">Sync Iter</label>
-        {{/if}}
-        {{#if fAsyncCode}}
-        <label class="codeselector fasynccode" for="{{name}}_radio_fasync" tabindex="0">Async Iter</label>
-        {{/if}}
-        <pre class="codeblock fcode"><button class="copy">Copy to clipboard</button>{{{fCode}}}</pre>
-        <pre class="codeblock flazycode"><button class="copy">Copy to clipboard</button>{{{fLazyCode}}}</pre>
-        <pre class="codeblock fasynccode"><button class="copy">Copy to clipboard</button>{{{fAsyncCode}}}</pre>
-        <a href="#toc" class="btt">Back to top</a>
-      </section>
+      <div class="tabpanel underdashfunction" data-function-name="{{name}}">
+        <ul class="tablist" role="tablist">
+          <li class="tab selected" aria-controls="{{name}}_arrays" aria-selected="true" role="tab" tabindex="0">Arrays</li>
+          {{#if fLazyCode}}
+          <li class="tab" aria-controls="{{name}}_synciter" role="tab" aria-selected="false" tabindex="-1">Sync Iter</li>
+          {{/if}}
+          {{#if fAsyncCode}}
+          <li class="tab" aria-controls="{{name}}_asynciter" role="tab" aria-selected="false" tabindex="-1">Async Iter</li>
+          {{/if}}
+        </ul>
+        <div id="{{name}}_arrays" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock ">{{{fCode}}}</pre>
+        </div>
+        <div id="{{name}}_synciter" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock">{{{fLazyCode}}}</pre>
+        </div>
+        <div id="{{name}}_asynciter" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock">{{{fAsyncCode}}}</pre>
+        </div>
+      </div>
     {{/each}}
   </div>
   <footer class="separatorblock">
@@ -293,7 +299,7 @@
       Underdash is a collection of snippets for array and iterator manipulation. It’s <em>not</em> meant to be a library and is therefore not provided as a bundled .js file. The individual implementations are supposed to be short and concise enough that the code can be immediately understood and be copy-pasted. If a function doesn’t <em>quite</em> do what you want, you should feel comfortable adjusting and augmenting the snippet.
     </p>
     <p class="intro">
-      Each function is provided in up to 3 flavors: 
+      Each function is provided in up to 3 flavors:
       <dl>
         <dt>The Array versions</dt>
         <dd>Work on arrays and should yield behavior similar to the functions provided by <a href="https://lodash.com" target="_blank" rel="noopener">LoDash</a> or <a href="http://underscorejs.org/" target="_blank" rel="noopener">UnderscoreJS</a>.</dd>
@@ -320,15 +326,6 @@
         link.onload = _ => document.body.classList.add('font-loaded');
         document.head.appendChild(link);
       });
-
-      Array.from(document.querySelectorAll('label')).forEach(label => {
-        label.onkeypress = evt => {
-          if (evt.code === 'Space' || evt.code === 'Enter') {
-            evt.preventDefault();
-            evt.target.click();
-          }
-        }
-      })
 
       Array.from(document.querySelectorAll('button.copy')).forEach(btn => {
         btn.onclick = evt => {
@@ -358,4 +355,228 @@
     ga('create', 'UA-88614738-1', 'auto');
     ga('send', 'pageview');
   </script>
+  <script>
+    function tabpanel(elem) {
+      this._panel = elem;
+      this._tabs = Array.from(this._panel.querySelectorAll('.tab'));
+      this._panels = Array.from(this._panel.querySelectorAll('.panel'));
+      this.bindHandlers();
+      this.init();
+    }
+
+    tabpanel.prototype.init = function() {
+      this._panels.forEach(panel => {
+        panel.setAttribute('aria-hidden', 'true')
+        panel.classList.add('hidden');
+      });
+
+      let selectedTab = this._tabs.filter(e => e.classList.contains('selected'));
+      if (selectedTab.length === 0) {
+        selectedTab = [this._tabs[0]];
+      }
+      selectedTab = selectedTab[0];
+      selectedTab.classList.add('selected');
+      const panel = this._panels.find(p => p.id === selectedTab.getAttribute('aria-controls'));
+      panel.classList.remove('hidden');
+      panel.setAttribute('aria-hidden', 'false');
+    }
+
+    tabpanel.prototype.switchTabs = function(curTab, newTab) {
+      curTab.classList.remove('selected', 'focus');
+      curTab.setAttribute('tabindex', '-1')
+      curTab.setAttribute('aria-selected', 'false');
+
+      const oldPanel = this._panels.find(e => e.id === curTab.getAttribute('aria-controls'));
+      oldPanel.classList.add('hidden');
+      oldPanel.setAttribute('aria-hidden', 'true');
+      const newPanel = this._panels.find(e => e.id === newTab.getAttribute('aria-controls'));
+      newPanel.classList.remove('hidden');
+      newPanel.setAttribute('aria-hidden', 'false');
+
+      newTab.classList.add('selected');
+      newTab.setAttribute('aria-selected', 'true');
+      newTab.setAttribute('tabindex', '0');
+      newTab.focus();
+    }
+
+    tabpanel.prototype.togglePanel = function(tab) {
+      const panel = this._panels.find(e => e.id === tab.getAttribute('aria-controls'));
+
+      panel.setAttribute(
+          'aria-hidden',
+          panel.getAttribute('aria-hidden') === 'true' ? 'false' : 'true'
+      );
+    }
+
+    tabpanel.prototype.bindHandlers = function() {
+      this.handleTabKeyDown = this.handleTabKeyDown.bind(this);
+      this._tabs.forEach(tab => tab.addEventListener('keydown', this.handleTabKeyDown));
+
+      this.handleTabKeyPress = this.handleTabKeyPress.bind(this);
+      this._tabs.forEach(tab => tab.addEventListener('keypress', this.handleTabKeyPress));
+
+      this.handleTabClick = this.handleTabClick.bind(this);
+      this._tabs.forEach(tab => tab.addEventListener('click', this.handleTabClick));
+
+      this.handleTabFocus = this.handleTabFocus.bind(this);
+      this._tabs.forEach(tab => tab.addEventListener('focus', this.handleTabFocus));
+
+      this.handleTabBlur = this.handleTabBlur.bind(this);
+      this._tabs.forEach(tab => tab.addEventListener('blur', this.handleTabBlur));
+
+      this.handlePanelKeyDown = this.handlePanelKeyDown.bind(this);
+      this._panels.forEach(panel => panel.addEventListener('keydown', this.handlePanelKeyDown));
+
+      this.handlePanelKeyPress = this.handlePanelKeyPress.bind(this);
+      this._panels.forEach(panel => panel.addEventListener('keypress', this.handlePanelKeyPress));
+    }
+
+    tabpanel.prototype.handleTabKeyDown = function (event) {
+      let idx, nexTab;
+      if (event.altKey) return true;
+
+      switch (event.code) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          idx = this._tabs.indexOf(event.target);
+          if (idx === 0)
+            newTab = this._tabs[this._tabs.length - 1];
+          else
+            newTab = this._tabs[idx - 1];
+          this.switchTabs(event.target, newTab);
+          event.preventDefault();
+          return false;
+        case 'ArrowRight':
+        case 'ArrowDown':
+          idx = this._tabs.indexOf(event.target);
+          if (idx === this._tabs.length-1)
+            newTab = this.tabs_[0];
+          else
+            newTab = this._tabs[idx + 1]
+          this.switchTabs(event.target, newTab);
+          event.preventDefault();
+          return false;
+        case 'Home':
+          this.switchTabs(event.target, this._tabs[0]);
+          event.preventDefault();
+          return false;
+        case 'End':
+          this.switchTabs(event.target, this._tabs[this._tabs.length - 1]);
+          event.preventDefault();
+          return false;
+      }
+    }
+
+    tabpanel.prototype.handleTabKeyPress = function (event) {
+      if (event.altKey) return true;
+
+      switch (event.keyCode) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case 'Home':
+        case 'End':
+          event.preventDefault();
+          return false;
+        case 'PageUp':
+        case 'PageDown':
+          if (!event.ctrlKey) return true;
+          event.preventDefault();
+          return false;
+      }
+
+      return true;
+    }
+
+    tabpanel.prototype.handleTabClick = function (event) {
+      const tab = event.target;
+      this._tabs.forEach(tab => {
+        tab.classList.remove('selected');
+        tab.setAttribute('tabindex', '-1');
+        tab.setAttribute('aria-selected', 'false');
+      });
+      this._panels.forEach(panel => panel.classList.add('hidden'));
+
+      tab.classList.add('selected');
+      tab.setAttribute('aria-selected', 'true');
+
+      this._panels.find(e => e.id === tab.getAttribute('aria-controls'))
+        .classList.remove('hidden');
+      tab.setAttribute('tabindex', '0');
+      tab.focus();
+      return true;
+    }
+
+    tabpanel.prototype.handleTabFocus = function (event) {
+      event.target.classList.add('focus');
+      return true;
+    }
+
+    tabpanel.prototype.handleTabBlur = function (event) {
+      event.target.classList.remove('focus');
+      return true;
+    }
+
+    tabpanel.prototype.handlePanelKeyDown = function (event) {
+      let newTab, idx;
+      if (event.altKey) return true;
+
+      switch (event.code) {
+        case 'Escape':
+          event.preventDefault();
+          return false;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          if (!event.ctrlKey) return true;
+          const tab = document.getElementById(event.target.getAttribute('aria-labelledby'));
+          tab.focus();
+          event.preventDefault();
+          return false;
+        case 'PageUp':
+          if (!event.ctrlKey) return true;
+          idx = this._tabs.findIndex(e => e.classList.contains('.selected'));
+          if (idx === 0)
+            newTab = this._tabs[this._tabs.length - 1];
+          else
+            newTab = this._tabs[idx - 1];
+
+          this.switchTabs(event.target, newTab);
+          event.preventDefault();
+          return false;
+        case 'PageDown':
+          if (!event.ctrlKey) return true;
+          idx = this._tabs.findIndex(e => e.classList.contains('.selected'));
+          if (idx === this._tabs.length - 1)
+            newTab = this._tabs[0];
+          else
+            newTab = this._tabs[idx + 1];
+
+          this.switchTabs(event.target, newTab);
+          event.preventDefault();
+          return false;
+      }
+      return true;
+    }
+
+    tabpanel.prototype.handlePanelKeyPress = function (event) {
+      if (event.altKey) return true;
+
+      if (event.ctrlKey && (event.code === 'PageUp' || event.code == 'pageDown')) {
+          event.preventDefault();
+          return false;
+      }
+
+      switch (event.code) {
+        case 'Escape': {
+          event.preventDefault();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    Array.from(document.querySelectorAll('.tabpanel'))
+      .forEach(tp => new tabpanel(tp));
+</script>
 </body>
