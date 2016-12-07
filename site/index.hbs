@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1, min-scale=1, width=device-width, user-scalable=yes" />
+  <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=yes" />
   <style>
     * {
       box-sizing: border-box;
@@ -12,7 +12,8 @@
       padding: 0;
       min-height: 100vh;
       font-family: sans-serif;
-      font-size: 18px;
+      font-size: 21px;
+      letter-spacing: -2.3px;
       font-weight: 300;
       background-color: hsla(0, 0%, 96%, 1);
     }
@@ -23,19 +24,27 @@
       margin: 0 1.5rem;
     }
     body.font-loaded {
-      font-family: 'Exo 2';
-      font-weight: 100;
-      /* Ratio of 'Exo 2' (weight: 100) to sans-serif
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: 200;
+      /* Ratio of this font to sans-serif
        * Determined using https://meowni.ca/font-style-matcher/
        */
-      font-size: calc(64rem / 71); 
+      font-size: calc(20 / 21 * 1rem);
+      letter-spacing: 0;
     }
-    h1, h2, h3 {
+    h1, h2 {
       text-align: center;
       text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
       margin: 0.5em 0;
-      font-weight: 300;
       line-height: 1.5em;
+
+      letter-spacing: -3.05px;
+      font-weight: 600;
+    }
+    body.font-loaded h1,
+    body.font-loaded h2 {
+      font-weight: 400;
+      letter-spacing: 0;
     }
     h1 {
       font-size: 4rem;
@@ -62,12 +71,15 @@
     p.intro:last-of-type {
       margin-bottom: 0;
     }
+    dl, dt, dd {
+      line-height: 1.4em;
+    }
     dl {
       max-width: 720px;
       margin: 1rem auto;
     }
     dt {
-      font-weight: 300;
+      font-weight: 400;
     }
     dd {
       margin-bottom: 0.5em;
@@ -79,9 +91,26 @@
       margin: 2rem 0 2rem -0.75rem;
       width: calc(100% + 1.5rem);
     }
+
+    .separatorblock {
+      width: 100vw;
+      min-height: 10vh;
+      margin: 2rem 0 2rem -1.5rem;
+      background-color: hsla(0, 0, 0, 0.74);
+      color: white;
+      padding: 2rem;
+      box-shadow: 0 0 4px hsla(0, 0, 0, 0.74);;
+    }
     nav {
-      max-width: 720px;
-      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      display: block;
+      margin: 0.5rem;
+      text-decoration: none;
     }
     #listing {
       width: 100%;
@@ -108,8 +137,7 @@
       font-size: 1.2rem;
       background-color: hsla(0, 0%, 0%, 0.1);
       margin: 0rem 0 1rem -1.5rem;
-      
-      padding: 1rem;
+      padding: 1rem 1.5rem;
       flex-basis: calc(100% + 1rem);
     }
     .underdashfunction:last-of-type {
@@ -138,13 +166,19 @@
       flex-shrink: 1;
       overflow: auto;
       align-self: stretch;
+      line-height: 1.4em;
+    }
+    @media (max-width: 470px) {
+      .codeblock {
+        padding-top: 2rem;
+      }
     }
     .codeblock .copy {
       position: absolute;
       top: 0;
       right: 0;
       border: 0;
-      background-color: hsla(0, 0%, 0%, 0.54);
+      background-color: hsla(0, 0%, 0%, 0.74);
       color: white;
       font-family: inherit;
       font-size: 0.8em;
@@ -183,7 +217,7 @@
        * Determined using https://meowni.ca/font-style-matcher/
        */
       font-family: 'Source Code Pro' !important;
-      font-size: calc(64rem / 70) !important;
+      font-size: calc(64rem / 70 * 0.8) !important;
       letter-spacing: 0 !important;
       font-weight: 200 !important;
     }
@@ -195,8 +229,12 @@
       margin-top: 1rem;
       text-decoration: none;
     }
+    .copyright {
+      margin: 6rem 0 0 0;
+      text-align: center;
+    }
     footer {
-      margin: 1em 0;
+      margin-bottom: 0 !important;
     }
   </style>
   <title>Underdash</title>
@@ -205,13 +243,11 @@
   <h1 class="title">Underdash</h1>
   <h2 class="subtitle">Just copy/paste what’cha need</h2>
 
-  <hr>
-    <nav id="toc">
-      {{#each functions}}
-      <a href="#{{name}}">{{name}}</a>, 
-      {{/each}}
-    </nav>
-  <hr>
+  <nav id="toc" class="separatorblock">
+    {{#each functions}}
+    <a href="#{{name}}">{{name}}</a>
+    {{/each}}
+  </nav>
   <div id="listing">
     {{#each functions}}
       <section class="underdashfunction" data-function-name="{{name}}" id="{{name}}">
@@ -232,28 +268,29 @@
       </section>
     {{/each}}
   </div>
-  <hr>
-  <p class="intro">
-    Underdash is a collection of snippets for array and iterator manipulation. It’s <em>not</em> meant to be a library and is therefore not provided as a bundled .js file. The individual implementations are supposed to be short and concise enough that the code can be immediately understood and be copy-pasted. If a function doesn’t <em>quite</em> do what you want, you should feel comfortable adjusting and augmenting the snippet.
-  </p>
-  <p class="intro">
-    Each function is provided in up to 3 flavors: 
-    <dl>
-      <dt>The Array versions</dt>
-      <dd>Work on arrays and should yield behavior similar to the functions provided by <a href="https://lodash.com" target="_blank" rel="noopener">LoDash</a> or <a href="http://underscorejs.org/" target="_blank" rel="noopener">UnderscoreJS</a>.</dd>
-      <dt>The Synchronous Iterator versions</dt>
-      <dd>Are implemented using generators and work with any (non-asynchronous) iterable. They are effectively lazy implementations.</dd>
-      <dt>The Asynchronous Iterator versions</dt>
-      <dd>Are implemented using asynchronous generators and work with any iterable. They are effectively lazy implementations.</dd>
-    </dl>
-  </p>
-  <footer>
-    Built with 🦁 by <a href="https://twitter.com/DasSurma" target="_blank" rel="noopener">Surma</a>, Apache-2.0 license. Code on <a href="https://github.com/surma/underdash" target="_blank" rel="noopener">GitHub</a>.
+  <footer class="separatorblock">
+    <p class="intro">
+      Underdash is a collection of snippets for array and iterator manipulation. It’s <em>not</em> meant to be a library and is therefore not provided as a bundled .js file. The individual implementations are supposed to be short and concise enough that the code can be immediately understood and be copy-pasted. If a function doesn’t <em>quite</em> do what you want, you should feel comfortable adjusting and augmenting the snippet.
+    </p>
+    <p class="intro">
+      Each function is provided in up to 3 flavors: 
+      <dl>
+        <dt>The Array versions</dt>
+        <dd>Work on arrays and should yield behavior similar to the functions provided by <a href="https://lodash.com" target="_blank" rel="noopener">LoDash</a> or <a href="http://underscorejs.org/" target="_blank" rel="noopener">UnderscoreJS</a>.</dd>
+        <dt>The Synchronous Iterator versions</dt>
+        <dd>Are implemented using generators and work with any (non-asynchronous) iterable. They are effectively lazy implementations.</dd>
+        <dt>The Asynchronous Iterator versions</dt>
+        <dd>Are implemented using asynchronous generators and work with any iterable. They are effectively lazy implementations.</dd>
+      </dl>
+    </p>
+    <div class="copyright">
+      Built with 🦁 by <a href="https://twitter.com/DasSurma" target="_blank" rel="noopener">Surma</a>, Apache-2.0 license. Code on <a href="https://github.com/surma/underdash" target="_blank" rel="noopener">GitHub</a>.
+    </div>
   </footer>
   <script>
     (function () {
       [
-        'https://fonts.googleapis.com/css?family=Exo+2:100,300|Source+Code+Pro:200',
+        'https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,400|Source+Code+Pro:200',
         'prism.css'
       ]
       .forEach(href => {
