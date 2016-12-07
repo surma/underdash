@@ -3,6 +3,19 @@ const fs = require('mz/fs');
 const prism = require('prismjs');
 const htmlminify = require('html-minifier').minify;
 
+Array.prototype.dropUntil = function (f) {
+  let ok = false;
+  return this.filter(e => ok || (ok = f(e)));
+}
+
+function removeCopyright(str) {
+  return str
+    .split('\n')
+    .dropUntil(line => line.endsWith('*/'))
+    .slice(1)
+    .join('\n');
+}
+
 const data = fs.readdir('f')
   .then(files => 
     files
@@ -10,11 +23,12 @@ const data = fs.readdir('f')
       .sort()
       .map(filename => {
         const name = filename.replace(/\.js$/, '');
-        const fCode = fs.readFile(`f/${name}.js`).then(buffer => buffer.toString());
-        const fLazyCode = fs.readFile(`f/${name}Lazy.js`).then(buffer => buffer.toString()).catch(_ => {});
+        const fCode = fs.readFile(`f/${name}.js`).then(buffer => buffer.toString()).then(removeCopyright);
+        const fLazyCode = fs.readFile(`f/${name}Lazy.js`).then(buffer => buffer.toString()).then(removeCopyright).catch(_ => {});
         const fAsyncCode = 
           fs.readFile(`f/${name}Async.js`)
             .then(buffer => buffer.toString())
+            .then(removeCopyright)
             .catch(_ => 
               fLazyCode
                 .then(code => code && transformLazyToAsyncCode(code))
