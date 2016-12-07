@@ -212,7 +212,6 @@
     }
     a.btt {
       display: block;
-      flex-basis: 100%;
       text-align: right;
       font-size: 0.7rem;
       margin-top: 1rem;
@@ -269,7 +268,7 @@
   </nav>
   <div id="listing">
     {{#each functions}}
-      <div class="tabpanel underdashfunction" data-function-name="{{name}}">
+      <div class="tabpanel underdashfunction" id="{{name}}" data-function-name="{{name}}">
         <ul class="tablist" role="tablist">
           <li class="tab selected" aria-controls="{{name}}_arrays" aria-selected="true" role="tab" tabindex="0">Arrays</li>
           {{#if fLazyCode}}
@@ -291,6 +290,7 @@
           <button class="copy">Copy to clipboard</button>
           <pre class="codeblock">{{{fAsyncCode}}}</pre>
         </div>
+        <a href="#toc" class="btt">Back to top</a>
       </div>
     {{/each}}
   </div>
