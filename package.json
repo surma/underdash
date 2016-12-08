@@ -1,6 +1,6 @@
 {
   "name": "underdash",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "dependencies": {
     "google-closure-compiler": "^20161201.0.0",
     "handlebars": "^4.0.6",
