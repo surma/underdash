@@ -2,6 +2,7 @@
   "name": "underdash",
   "version": "0.0.1",
   "dependencies": {
+    "google-closure-compiler": "^20161201.0.0",
     "handlebars": "^4.0.6",
     "html-minifier": "^3.2.3",
     "mz": "^2.6.0",

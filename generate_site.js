@@ -2,6 +2,7 @@ const handlebars = require('handlebars');
 const fs = require('mz/fs');
 const prism = require('prismjs');
 const htmlminify = require('html-minifier').minify;
+const closure = require('google-closure-compiler').compiler;
 
 Array.prototype.dropUntil = function (f) {
   let ok = false;
@@ -55,12 +56,37 @@ const data = fs.readdir('f')
     return {functions: data}
   });
 
-fs.readFile('site/index.hbs')
-  .then(file => Promise.all([data, file.toString()]))
-  .then(([data, template]) => handlebars.compile(template)(data))
+function closureCompile(file) {
+  return new Promise((resolve, reject) => {
+    const compiler = new closure({
+      js: file,
+      compilation_level: 'ADVANCED'
+    })
+    .run((exitCode, stdOut, stdErr) => {
+      if (exitCode === 0) return resolve(stdOut);
+      reject(stdErr);
+    });
+  });
+}
+
+fs.readdir('site/')
+  .then(files => 
+    Promise.all([
+      fs.readFile('site/index.hbs').then(f => f.toString()),
+      data,
+      ...files.filter(f => f.endsWith('.js')),
+    ])
+  )
+  .then(([template, data, ...jsFiles]) => {
+    const index = handlebars.compile(template)(data);
+    return Promise.all(jsFiles.map(f => closureCompile(`site/${f}`)))
+        .then(files => index + 
+          files.map(f => `<script>${f}</script>`).join('')
+        );
+  })
   .then(content => htmlminify(content, {
     minifyCSS: true,
-    minifyJS: true,
+    minifyJS: false,
     removeAttributeQuotes: true,
     collapseWhitespace: true
   }))
