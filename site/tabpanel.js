@@ -60,23 +60,23 @@ tabpanel.prototype.handleTabKeyDown = function (event) {
   let idx, nexTab;
   if (event.altKey) return true;
 
-  switch (event.code) {
-    case 'ArrowLeft':
-    case 'ArrowUp':
+  switch (event.keyCode) {
+    case 37: // 'ArrowLeft':
+    case 38: // 'ArrowUp':
       idx = this._tabs.findIndex(e => e.classList.contains('selected'));
       newTab = this._tabs[(idx - 1 + this._tabs.length) % this._tabs.length];
       this.switchTabs(newTab);
       break;
-    case 'ArrowRight':
-    case 'ArrowDown':
+    case 39: // 'ArrowRight':
+    case 40: // 'ArrowDown':
       idx = this._tabs.findIndex(e => e.classList.contains('selected'));
       newTab = this._tabs[(idx + 1 + this._tabs.length) % this._tabs.length];
       this.switchTabs(newTab);
       break;
-    case 'Home':
+    case 36: // 'Home':
       this.switchTabs(this._tabs[0]);
       break;
-    case 'End':
+    case 35: // 'End':
       this.switchTabs(this._tabs[this._tabs.length - 1]);
       break;
     default:
