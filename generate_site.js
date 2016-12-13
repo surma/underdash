@@ -20,7 +20,6 @@ function removeCopyright(str) {
     .dropUntil(line => line.endsWith('*/'))
     .slice(1)
     .dropUntil(line => !(/^\s*$/.test(line)))
-    .takeWhile(line => !(/^\s*$/.test(line)))
     .join('\n');
 }
 
