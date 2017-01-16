@@ -21,17 +21,16 @@ it('returns a portion of an array selected from start to end (end not included)'
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, 9)).to.deep.equal([6, 7, 8, 9]);
 });
 
-it('return an empty array if start >= length of array', function () {
+it('returns an empty array if start >= length of array', function () {
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20, 5)).to.deep.equal([]);
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 11, 7)).to.deep.equal([]);
 });
 
-it('return an empty array if start == end', function () {
+it('returns an empty array if start == end', function () {
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, 5)).to.deep.equal([]);
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3, 3)).to.deep.equal([]);
 });
 
-it('if the end is negative indicates an offset from the end', function () {
-  expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, -5)).to.deep.equal([3, 4, 5]);
-  expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3, -3)).to.deep.equal([4, 5, 6, 7]);
+it('handles short arrays', function () {
+  expect(f([1, 2], 0, 5)).to.deep.equal([1, 2]);
 });

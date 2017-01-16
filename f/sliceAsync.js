@@ -17,8 +17,8 @@
 
 function* slice(it, start, end) {
   it = it[Symbol.iterator]();
-  for(; start > 0; start--, end--) it.next();
-  for(let v of it) 
+  for(; start > 0; start--, end--) await it.next();
+  for await (let v of it) 
     if(end-- > 0)
       yield v;
     else
