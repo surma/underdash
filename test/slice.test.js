@@ -31,6 +31,11 @@ it('returns an empty array if start == end', function () {
   expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3, 3)).to.deep.equal([]);
 });
 
+it('cuts off at the end if end < 0', function () {
+  expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, -3)).to.deep.equal([3, 4, 5, 6, 7]);
+  expect(f([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 1, -2)).to.deep.equal([2, 3, 4, 5, 6, 7, 8]);
+});
+
 it('handles short arrays', function () {
   expect(f([1, 2], 0, 5)).to.deep.equal([1, 2]);
 });

@@ -17,12 +17,28 @@
 
 function* slice(it, start = 0, end = Number.POSITIVE_INFINITY) {
   it = it[Symbol.iterator]();
+  const buffer = end < 0 ? new Array(-end) : [];
   for(; start > 0; start--, end--) it.next();
-  for(let v of it) 
-    if(end-- > 0)
-      yield v;
-    else
-      break;
+
+  if (end >= 0) {
+    for (let v of it) {
+      if(end-- > 0)
+        yield v;
+      else
+        break;
+    }
+  } else {
+    for(let v of it) {
+      buffer[start % buffer.length] = v;
+      start = (start + 1) % buffer.length;
+      if (start === 0) break;
+    }
+    for(let v of it) {
+      yield buffer[start];
+      buffer[start] = v;
+      start = (start + 1) % buffer.length;
+    }
+  }
 }
 
 // Example:
