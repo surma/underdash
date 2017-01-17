@@ -34,3 +34,7 @@ it('returns an empty array if start == end', function () {
 it('handles short arrays', function () {
   expect(f([1, 2], 0, 5)).to.deep.equal([1, 2]);
 });
+
+it('has sensible defaults', function () {
+  expect(f([1, 2, 3, 4])).to.deep.equal([1, 2, 3, 4]);
+});
