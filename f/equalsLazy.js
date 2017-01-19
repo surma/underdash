@@ -18,7 +18,7 @@
 function equals(it1, it2) {
   it1 = it1[Symbol.iterator]();
   it2 = it2[Symbol.iterator]();
-  for (;;) {
+  while (true) {
     let i1 = it1.next(), i2 = it2.next();
     if (i1.value !== i2.value) return false;
     if (i1.done || i2.done) return i1.done && i2.done;
