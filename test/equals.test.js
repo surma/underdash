@@ -16,10 +16,10 @@
  */
 
 it('returns true if both iterables have equal length and values (in the same order)', function () {
-  expect(f([1, 2, 3, 'hello'], [1, 2, 3, 'hello'])).to.deep.equal(true);
-  expect(f([1, 2, 3, 'hello'], [1, 2, 3, 'bye'])).to.deep.equal(false);
-  expect(f([1, 2, 3, 'hello'], [1, 2, 3])).to.deep.equal(false);
-  expect(f([1, 2, 3], [1, 2, 3, 'hello'])).to.deep.equal(false);
-  expect(f([1, true, 'hello', 3], [1, true, 3, 'hello'])).to.deep.equal(false);
-  expect(f([1, true, 'hello', -7.5, null, undefined], [1, true, 'hello', -7.5, null, undefined])).to.deep.equal(true);
+  expect(f([1, 2, 3, 'hello'], [1, 2, 3, 'hello'])).to.equal(true);
+  expect(f([1, 2, 3, 'hello'], [1, 2, 3, 'bye'])).to.equal(false);
+  expect(f([1, 2, 3, 'hello'], [1, 2, 3])).to.equal(false);
+  expect(f([1, 2, 3], [1, 2, 3, 'hello'])).to.equal(false);
+  expect(f([1, true, 'hello', 3], [1, true, 3, 'hello'])).to.equal(false);
+  expect(f([1, true, 'hello', -7.5, null, undefined], [1, true, 'hello', -7.5, null, undefined])).to.equal(true);
 });
