@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function* slice(it, start, end) {
+function* slice(it, start = 0, end = Number.POSITIVE_INFINITY) {
   it = it[Symbol.iterator]();
   for(; start > 0; start--, end--) await it.next();
   for await (let v of it) 
