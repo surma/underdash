@@ -1,0 +1,328 @@
+<!doctype html>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=yes" />
+  <link rel="icon" href="favicon.png">
+  <meta name="theme-color" content="#f5f5f5">
+  <meta property="og:title" content="Underdash" />
+  <meta name="twitter:title" content="Underdash" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://surma.github.io/underdash/" />
+  <meta property="og:image" content="https://surma.github.io/underdash/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://surma.github.io/underdash/logo.png" />
+  <meta property="og:description" content="JS snippets for collection manipulation. Just copy/paste what’cha need." />
+  <meta name="twitter:description" content="JS snippets for collection manipulation. Just copy/paste what’cha need." />
+  <meta name="twitter:site" content="DasSurma" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    :root {
+      font-size: 21px;
+    }
+    body {
+      margin: 0;
+      border: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: sans-serif;
+      letter-spacing: -2.3px;
+      font-weight: 300;
+      background-color: hsla(0, 0%, 96%, 1);
+    }
+    html {
+      background-color: hsla(0, 0%, 25%, 1);
+    }
+    a, a:link, a:visited, a:hover, a:active {
+      color: inherit;
+    }
+    body {
+      padding: 1.5em 1.5em 0 1.5em;
+    }
+    body.font-loaded {
+      font-family: 'Yanone Kaffeesatz';
+      font-weight: 400;
+      /* Ratio of this font to sans-serif
+       * Determined using https://meowni.ca/font-style-matcher/
+       */
+      font-size: calc(20 / 21 * 1rem);
+      letter-spacing: 0;
+    }
+    h1, h2 {
+      text-align: center;
+      text-shadow: 0px 0px 2px hsla(0, 0%, 40%, 0.4);
+      margin: 0.5em 0;
+      line-height: 1.5em;
+
+      letter-spacing: -3.05px;
+      font-weight: 600;
+    }
+    body.font-loaded h1,
+    body.font-loaded h2 {
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 4rem;
+    }
+    h2 {
+      font-size: 1.4rem;
+    }
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 3rem;
+      }
+      h2 {
+        font-size: 1.05rem;
+      }
+    }
+    .subtitle {
+      margin-top: -2rem;
+    }
+    p.intro {
+      max-width: 720px;
+      margin: 1rem auto;
+      line-height: 1.4em;
+    }
+    p.intro:last-of-type {
+      margin-bottom: 0;
+    }
+    dl, dt, dd {
+      line-height: 1.4em;
+    }
+    dl {
+      max-width: 720px;
+      margin: 1rem auto;
+    }
+    dt {
+      font-weight: 600;
+    }
+    dd {
+      margin-bottom: 0.5em;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid hsla(0, 0%, 0%, 0.3);
+      box-shadow: 0 0 4px hsla(0, 0%, 0%, 0.2);
+      margin: 2rem 0 2rem -0.75rem;
+      width: calc(100% + 1.5rem);
+    }
+
+    .separatorblock {
+      width: 100vw;
+      min-height: 10vh;
+      margin: 2rem 0 2rem -1.5rem;
+      background-color: hsla(0, 0%, 25%, 1);
+      color: white;
+      padding: 2rem;
+      box-shadow: 0 0 4px hsla(0, 0%, 25%, 1);;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      display: block;
+      margin: 0.5rem;
+      text-decoration: none;
+    }
+    #listing {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+    .underdashfunction {
+      max-width: 100%;
+      width: 100%;
+      flex-basis: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 2rem;
+    }
+    .underdashfunction:before {
+      display: block;
+      content: attr(data-function-name);
+      text-align: left;
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+      background-color: hsla(0, 0%, 0%, 0.1);
+      margin: 0rem 0 1rem -1.5rem;
+      padding: 1rem 1.5rem;
+    }
+    .underdashfunction:last-of-type {
+      margin-bottom: 0;
+    }
+    @media (min-width: 1000px) {
+      .underdashfunction {
+        flex-basis: calc(50% - 4rem);
+        width: calc(50% - 4rem);
+        max-width: calc(50% - 4rem);
+      }
+      .underdashfunction:before {
+        margin-left: 0;
+      }
+    }
+    .codeblock {
+      display: block;
+      border: 1px solid black;
+      background-color: hsla(0, 0%, 100%, 0.54);
+      padding: 0.5rem 1rem;
+      margin: 0;
+      overflow: auto;
+      line-height: 1.4em;
+    }
+    @media (max-width: 470px) {
+      .codeblock {
+        padding-top: 2rem;
+      }
+    }
+    .copy {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 0;
+      background-color: hsla(0, 0%, 0%, 0.74);
+      color: white;
+      font-family: inherit;
+      font-size: 0.8em;
+      padding: 0.5em;
+    }
+    pre.codeblock {
+      font-family: monospace !important;
+      font-size: 1rem !important;
+      letter-spacing: -1.2px !important;
+    }
+    .font-loaded pre.codeblock {
+      /* Ratio of 'Source Code Pro' (weight: 200) to sans-serif
+       * Determined using https://meowni.ca/font-style-matcher/
+       */
+      font-family: 'Source Code Pro' !important;
+      font-size: calc(64rem / 70 * 0.8) !important;
+      letter-spacing: 0 !important;
+      font-weight: 400 !important;
+    }
+    a.btt {
+      display: block;
+      text-align: right;
+      font-size: 0.7rem;
+      margin-top: 1rem;
+      text-decoration: none;
+    }
+    .copyright {
+      margin: 6rem 0 0 0;
+      text-align: center;
+    }
+    footer {
+      margin-bottom: 0 !important;
+    }
+
+    .tabpanel .tablist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+    }
+    .tabpanel .tablist .tab {
+      padding: 0.5rem 1rem;
+      background-color: hsla(0, 0%, 100%, 0.54);
+      border: 1px solid black;
+      border-right: 0;
+      border-bottom: 0;
+    }
+    .tabpanel .tablist .tab:last-of-type {
+      border-right: 1px solid black;
+    }
+    .tabpanel .tablist .tab.selected {
+      background-color: hsla(50, 100%, 80%, 0.54);
+    }
+
+    .tabpanel .panel {
+      position: relative;
+      display: block;
+    }
+    .tabpanel .hidden {
+      display: none;
+    }
+
+  </style>
+  <title>Underdash</title>
+</head>
+<body>
+  <h1 class="title">Underdash</h1>
+  <h2 class="subtitle">Just copy/paste what’cha need</h2>
+
+  <nav id="toc" class="separatorblock">
+    {{#each functions}}
+    <a href="#{{name}}">{{name}}</a>
+    {{/each}}
+  </nav>
+  <div id="listing">
+    {{#each functions}}
+      <div class="tabpanel underdashfunction" id="{{name}}" data-function-name="{{name}}">
+        <ul class="tablist" role="tablist">
+          <li class="tab selected" aria-controls="{{name}}_arrays" aria-selected="true" role="tab" tabindex="0">Arrays</li>
+          {{#if fLazyCode}}
+          <li class="tab" aria-controls="{{name}}_synciter" role="tab" aria-selected="false" tabindex="-1">Sync Iter</li>
+          {{/if}}
+          {{#if fAsyncCode}}
+          <li class="tab" aria-controls="{{name}}_asynciter" role="tab" aria-selected="false" tabindex="-1">Async Iter</li>
+          {{/if}}
+        </ul>
+        <div id="{{name}}_arrays" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock ">{{{fCode}}}</pre>
+        </div>
+        <div id="{{name}}_synciter" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock">{{{fLazyCode}}}</pre>
+        </div>
+        <div id="{{name}}_asynciter" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <button class="copy">Copy to clipboard</button>
+          <pre class="codeblock">{{{fAsyncCode}}}</pre>
+        </div>
+        <a href="#toc" class="btt">Back to top</a>
+      </div>
+    {{/each}}
+  </div>
+  <footer class="separatorblock">
+    <p class="intro">
+      Underdash is a collection of snippets for array and iterator manipulation. It’s <em>not</em> meant to be a library and is therefore not provided as a bundled .js file. The individual implementations are supposed to be short and concise enough that the code can be immediately understood and be copy-pasted. If a function doesn’t <em>quite</em> do what you want, you should feel comfortable adjusting and augmenting the snippet.
+    </p>
+    <p class="intro">
+      Each function is provided in up to 3 flavors:
+      <dl>
+        <dt>The Array versions</dt>
+        <dd>Work on arrays and should yield behavior similar to the functions provided by <a href="https://lodash.com" target="_blank" rel="noopener">LoDash</a> or <a href="http://underscorejs.org/" target="_blank" rel="noopener">UnderscoreJS</a>.</dd>
+        <dt>The Synchronous Iterator versions</dt>
+        <dd>Are implemented using generators and work with any (non-asynchronous) iterable. They are effectively lazy implementations.</dd>
+        <dt>The Asynchronous Iterator versions</dt>
+        <dd>Are implemented using asynchronous generators and work with any iterable. They are effectively lazy implementations.</dd>
+      </dl>
+    </p>
+    <div class="copyright">
+      Built with 🦁 by <a href="https://twitter.com/DasSurma" target="_blank" rel="noopener">Surma</a>, Apache-2.0 license. Code on <a href="https://github.com/surma/underdash" target="_blank" rel="noopener">GitHub</a>.
+    </div>
+  </footer>
+</body>
