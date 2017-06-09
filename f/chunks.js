@@ -16,13 +16,11 @@
  */
 
 function chunks(arr, size) {
-  size = size >> 0;
-  if ( size <= 0 || size > arr.length ) return arr;
-  const buffer = new Array(Math.ceil(arr.length / size));
-  for ( let i = 0; i < buffer.length; ) {
-    buffer[i] = arr.slice(i * size, ++i * size);
+  let output = [];
+  for (let i = 0; i < arr.length; i += size) {
+    output.push(arr.slice(i, i + size));
   }
-  return buffer;
+  return output;
 }
 
 // Example:

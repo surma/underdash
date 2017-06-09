@@ -15,10 +15,18 @@
  * limitations under the License.
  */
 
-it('should split in chunks', function () {
-  expect(f([1,2,3,4,5,6,7,8,9,10], 2)).to.deep.equal([[1,2],[3,4],[5,6],[7,8],[9,10]]);
-  expect(f([1,2,3,4,5,6,7,8,9,10], 3)).to.deep.equal([[1,2,3],[4,5,6],[7,8,9],[10]]);
-  expect(f([1,2,3,4,5,6,7,8,9,10], 5)).to.deep.equal([[1,2,3,4,5],[6,7,8,9,10]]);
-  expect(f([1,2,3,4,5,6,7,8,9,10], 10)).to.deep.equal([[1,2,3,4,5,6,7,8,9,10]]);
-  expect(f([1,2,3,4,5,6,7,8,9,10], 20)).to.deep.equal([[1,2,3,4,5,6,7,8,9,10]]);
-});
+async function* chunks(it, size) {
+  let buffer = [];
+  for await (let v of it) {
+    buffer.push(v);
+    if (buffer.length === size) {
+      yield buffer;
+      buffer = [];
+    }
+  }
+  if (buffer.length > 0) yield buffer;
+}
+
+// Example:
+chunks([1,2,3,4,5,6,7,8,9,10], 3);
+// returns [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]
