@@ -16,7 +16,7 @@
  */
 
 function chunks(arr, size) {
-  let output = [];
+  const output = [];
   for (let i = 0; i < arr.length; i += size) {
     output.push(arr.slice(i, i + size));
   }
