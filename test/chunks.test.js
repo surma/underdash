@@ -22,3 +22,9 @@ it('should split in chunks', function () {
   expect(f([1,2,3,4,5,6,7,8,9,10], 10)).to.deep.equal([[1,2,3,4,5,6,7,8,9,10]]);
   expect(f([1,2,3,4,5,6,7,8,9,10], 20)).to.deep.equal([[1,2,3,4,5,6,7,8,9,10]]);
 });
+
+it('should split in chunks with reasonable defaults', function () {
+  expect(f([1,2,3,4], 1)).to.deep.equal([[1],[2],[3],[4]]);
+  expect(f([1,2,3,4])).to.not.deep.equal([ [] ]);
+  expect(f([1,2,3,4])).to.deep.equal([[1],[2],[3],[4]]);
+});
