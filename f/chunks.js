@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function chunks(arr, size = 1) {
+function chunks(arr, size) {
   const output = [];
   for (let i = 0; i < arr.length; i += size) {
     output.push(arr.slice(i, i + size));
