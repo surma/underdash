@@ -20,5 +20,5 @@ it('should find the maximum', function () {
 });
 
 it('should find the maximum without second argument', function () {
-  expect(f([1,2,3,4,3,2,1]).to.equal(4);
-}
+  expect(f([1,2,3,4,3,2,1])).to.equal(4);
+});
