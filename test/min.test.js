@@ -18,3 +18,7 @@
 it('should find the minimum', function () {
   expect(f([4,3,2,1,2,3,4], (a, b) => a>b)).to.equal(1);
 });
+
+it('should find the minimum without second argument', function () {
+    expect(f([4,3,2,1,2,3,4])).to.equal(1);
+});

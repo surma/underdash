@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function max(arr, gt) {
+function max(arr, gt = (a,b) => a > b) {
   return arr.slice(1).reduce((max, cur) => gt(max, cur)?max:cur, arr[0]);
 }
 

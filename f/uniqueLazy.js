@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function* unique(it, f) {
+function* unique(it, f = id => id) {
   const buffer = [];
   for (let v of it) {
     const fv = f(v);
