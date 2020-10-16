@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function min(it, gt) {
+function min(it, gt = (a, b) => a > b) {
   let min = undefined;
   for(let v of it) {
     if(!min) {
