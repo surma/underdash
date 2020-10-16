@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function unique(arr, f) {
+function unique(arr, f = id => id) {
   const vArr = arr.map(f);
   return arr.filter((_, i) => vArr.indexOf(vArr[i]) === i);
 }

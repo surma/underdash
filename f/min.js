@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function min(arr, gt) {
+function min(arr, gt = (a, b) => a > b) {
   return arr.slice(1).reduce((min, cur) => gt(min, cur)?cur:min, arr[0]);
 }
 
