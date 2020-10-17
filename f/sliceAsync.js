@@ -26,5 +26,5 @@ function* slice(it, start = 0, end = Number.POSITIVE_INFINITY) {
 }
 
 // Example:
-[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].slice(5, 9);
+slice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, 9);
 // returns [6, 7, 8, 9]

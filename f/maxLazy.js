@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-function max(it, gt) {
+function max(it, gt = (a,b) => a > b) {
   let max = undefined;
   for(let v of it) {
     if(!max) {
