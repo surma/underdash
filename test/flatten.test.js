@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
-it('removes one level or array nesting', function () {
-  expect(f([[1],[2,3],4,[[5,6]]])).to.deep.equal([1,2,3,4,[5,6]]);
+ it('removes one level of array nesting', function () {
+  expect(f([[1],[2,3],4,[[5,6]]], 1)).to.deep.equal([1,2,3,4,[5,6]]);
+});
+
+it('remove all levels of array nesting', function () {
+  expect(f([[1],[2,3],4,[[5,6]]])).to.deep.equal([1,2,3,4,5,6]);
 });

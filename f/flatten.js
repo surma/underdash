@@ -15,10 +15,7 @@
  * limitations under the License.
  */
 
-function flatten(arr) {
-  return Array.prototype.concat.apply([], arr);
-}
-
+// Already defined on arrays
 // Example:
-flatten([1, [2, 3], [[4]]]);
-// returns [1, 2, 3, [4]]
+[1, [2, 3], [[4]]].flat()
+// returns [1, 2, 3, 4]
