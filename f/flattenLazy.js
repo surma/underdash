@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-function* flatten(it) {
+function* flatten(it, depth=Infinity) {
   for (let v of it) {
-    if (v[Symbol.iterator])
-      yield* v;
+    if (v[Symbol.iterator] && depth > 0)
+      yield* flatten(v, depth - 1);
     else
       yield v;
   }
@@ -26,4 +26,4 @@ function* flatten(it) {
 
 // Example:
 flatten([1, [2, 3], [[4]]]);
-// returns [1, 2, 3, [4]]
+// returns [1, 2, 3, 4]
